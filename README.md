@@ -125,9 +125,9 @@ usejava 17
 
 # 🪟 Windows CMD Setup
 
-### 1. Place Repo
+### 1. Clone or Download Repository
 
-Example:
+Example location:
 
 ```
 C:\Tools\java-maven-switcher
@@ -135,9 +135,9 @@ C:\Tools\java-maven-switcher
 
 ---
 
-### 2. Add to PATH
+### 2. Add Scripts Folder to PATH
 
-Add this:
+You must add the `scripts` folder (where `usejava.bat` exists) to PATH:
 
 ```
 C:\Tools\java-maven-switcher\scripts
@@ -145,23 +145,36 @@ C:\Tools\java-maven-switcher\scripts
 
 Steps:
 
-- Search "Environment Variables"
-- Edit system environment variables
 - Open "Environment Variables"
-- Edit "Path"
-- Add new entry above path
+- Click "Edit the system environment variables"
+- Click "Environment Variables"
+- Under "System variables" → select `Path` → Edit
+- Click "New"
+- Add the path above
+- Click OK
 
 ---
 
-### 3. Open New CMD
+### 3. Restart CMD
 
-Then run:
+Close all CMD windows and open a new one.
+
+---
+
+### 4. Test
 
 ```
 usejava help
 usejava list
 usejava 17
 ```
+
+---
+
+### ⚠️ Important Notes for CMD
+
+- Changes apply only to the current CMD session
+- You must run `usejava` again in new CMD windows
 
 ---
 
