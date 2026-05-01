@@ -1,25 +1,130 @@
-# Java Maven Switcher ⚡
+# ⚡ Java Maven Switcher
 
-A lightweight **dynamic Java + Maven version manager** for Windows CMD and Git Bash.
+<p align="center">
+  <b>Dynamic Java & Maven Version Manager for Windows CMD and Git Bash</b><br/>
+  Switch, manage, and control multiple JDK & Maven versions with ease.
+</p>
 
-Switch, list, add, remove, and check active Java/Maven versions using one simple command:
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-windows-blue" />
+  <img src="https://img.shields.io/badge/shell-cmd%20%7C%20gitbash-green" />
+  <img src="https://img.shields.io/badge/license-MIT-black" />
+  <img src="https://img.shields.io/badge/status-active-success" />
+</p>
 
-```
-usejava 17
+---
+
+## ✨ Features
+
+- 🔄 Switch Java & Maven versions instantly
+- ⚙️ Dynamic configuration (no script edits required)
+- ➕ Add / ❌ Remove versions on the fly
+- 📋 List all configured versions
+- 🔍 Check active environment
+- 🧩 Works on **Windows CMD** and **Git Bash**
+- 🛡️ Safe (no permanent system changes)
+
+---
+
+## 📦 Installation
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/MadushanSandaru1/java-maven-switcher.git
 ```
 
 ---
 
-## 🚀 Features
+## 🐧 Git Bash Setup
 
-- Switch Java + Maven versions instantly
-- Works with Windows CMD
-- Works with Git Bash
-- Dynamic config file (no script edits needed)
-- Add/remove versions easily
-- List available versions
-- Show active environment
-- Safe (session-based, no permanent changes)
+### Step 1: Open `.bashrc`
+
+```bash
+nano ~/.bashrc
+```
+
+---
+
+### Step 2: Add Script
+
+```bash
+source "/c/path/to/java-maven-switcher/scripts/usejava.sh"
+```
+
+---
+
+### Step 3: Reload
+
+```bash
+source ~/.bashrc
+```
+
+---
+
+### Step 4: Test
+
+```bash
+usejava help
+```
+
+---
+
+## 🪟 Windows CMD Setup
+
+### Step 1: Place Project
+
+Example:
+
+```
+C:\Tools\java-maven-switcher
+```
+
+---
+
+### Step 2: Add Scripts Folder to PATH
+
+```
+C:\Tools\java-maven-switcher\scripts
+```
+
+---
+
+### Step 3: Restart CMD
+
+Open a new CMD window.
+
+---
+
+### Step 4: Test
+
+```cmd
+usejava help
+```
+
+---
+
+## ⚙️ Commands
+
+```bash
+usejava help
+usejava list
+usejava active
+usejava 8
+usejava 17
+```
+
+### ➕ Add Version
+
+```bash
+usejava add 21 "C:\Program Files\Java\jdk-21" "C:\Program Files\Maven\apache-maven-3.9.11"
+```
+
+### ❌ Remove Version
+
+```bash
+usejava remove 21
+```
 
 ---
 
@@ -32,30 +137,15 @@ java-maven-switcher/
 ├─ scripts/
 │  ├─ usejava.bat
 │  └─ usejava.sh
-├─ .gitignore
 ├─ README.md
 └─ LICENSE
 ```
 
 ---
 
-## ⚙️ Commands
+## 🧩 Configuration
 
-```
-usejava help
-usejava list
-usejava active
-usejava 8
-usejava 17
-usejava add 21 "C:\Program Files\Java\jdk-21" "C:\Program Files\Maven\apache-maven-3.9.11"
-usejava remove 21
-```
-
----
-
-## 🧩 Config File
-
-Location:
+Edit:
 
 ```
 config/versions.conf
@@ -72,187 +162,32 @@ Example:
 ```
 8|C:\Program Files\Java\jdk1.8.0_202|C:\Program Files\Maven\apache-maven-3.6.3
 17|C:\Program Files\Java\jdk-17|C:\Program Files\Maven\apache-maven-3.9.11
-21|C:\Program Files\Java\jdk-21|C:\Program Files\Maven\apache-maven-3.9.11
 ```
 
 ---
 
-# 🐧 Git Bash Setup
+## 🔍 Verify
 
-### 1. Clone Repository
-
-```
-git clone https://github.com/MadushanSandaru1/java-maven-switcher.git
-```
-
----
-
-### 2. Open `.bashrc`
-
-```
-nano ~/.bashrc
-```
-
----
-
-### 3. Add This Line
-
-```
-source "/c/Tools/java-maven-switcher/scripts/usejava.sh"
-```
-
-(Adjust path based on your location)
-
----
-
-### 4. Reload
-
-```
-source ~/.bashrc
-```
-
----
-
-### 5. Test
-
-```
-usejava help
-usejava list
-usejava 17
-```
-
----
-
-# 🪟 Windows CMD Setup
-
-### 1. Clone or Download Repository
-
-Example location:
-
-```
-C:\Tools\java-maven-switcher
-```
-
----
-
-### 2. Add Scripts Folder to PATH
-
-You must add the `scripts` folder (where `usejava.bat` exists) to PATH:
-
-```
-C:\Tools\java-maven-switcher\scripts
-```
-
-Steps:
-
-- Open "Environment Variables"
-- Click "Edit the system environment variables"
-- Click "Environment Variables"
-- Under "System variables" → select `Path` → Edit
-- Click "New"
-- Add the path above
-- Click OK
-
----
-
-### 3. Restart CMD
-
-Close all CMD windows and open a new one.
-
----
-
-### 4. Test
-
-```
-usejava help
-usejava list
-usejava 17
-```
-
----
-
-### ⚠️ Important Notes for CMD
-
-- Changes apply only to the current CMD session
-- You must run `usejava` again in new CMD windows
-
----
-
-# 🧪 Usage Guide
-
-## Show Help
-
-```
-usejava help
-```
-
----
-
-## List Versions
-
-```
-usejava list
-```
-
----
-
-## Switch Version
-
-```
-usejava 17
-usejava 8
-```
-
----
-
-## Active Version
-
-```
-usejava active
-```
-
----
-
-## Add Version
-
-```
-usejava add 21 "C:\Program Files\Java\jdk-21" "C:\Program Files\Maven\apache-maven-3.9.11"
-```
-
----
-
-## Remove Version
-
-```
-usejava remove 21
-```
-
----
-
-# 🔍 Verify
-
-```
+```bash
 java -version
 mvn -version
 ```
 
 ---
 
-# ⚠️ Notes
+## ⚠️ Important Notes
 
-- Only affects current terminal session
-- No permanent system changes
+- Changes apply **only to current terminal session**
+- No permanent system changes are made
 - Run `usejava` again in new terminals
-- Git Bash auto converts Windows paths
 
 ---
 
-# 💡 Example Workflow
+## 💡 Example Workflow
 
-```
+```bash
 usejava list
 usejava 17
-usejava active
 mvn clean install
 usejava 8
 java -version
@@ -260,6 +195,39 @@ java -version
 
 ---
 
-# 📜 License
+## 🚀 Roadmap
+
+- [ ] PowerShell support
+- [ ] Default version command (`usejava default`)
+- [ ] Auto-detect installed JDKs
+- [ ] Interactive CLI mode
+- [ ] Global config support
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repo
+2. Create your feature branch
+3. Commit your changes
+4. Push and open a PR
+
+---
+
+## 📜 License
 
 MIT License © 2026 Madhushan Sandaruwan
+
+---
+
+## ⭐ Support
+
+If you found this useful:
+
+- ⭐ Star the repo  
+- 🍴 Fork it  
+- 🧠 Share improvements  
+
+---
