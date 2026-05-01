@@ -2,60 +2,31 @@
 setlocal EnableExtensions EnableDelayedExpansion
 
 set "USEJAVA_HOME=%~dp0.."
-set "CONFIG_FILE=%USEJAVA_HOME%\config\versions.conf"
+set "PS_SCRIPT=%USEJAVA_HOME%\scripts\usejava.ps1"
 
-set "CMD=%~1"
-
-if "%CMD%"=="" goto help
-if "%CMD%"=="help" goto help
-if "%CMD%"=="-h" goto help
-if "%CMD%"=="--help" goto help
-if "%CMD%"=="list" goto list
-if "%CMD%"=="active" goto active
-if "%CMD%"=="add" goto add
-if "%CMD%"=="remove" goto remove
+if "%~1"=="" goto help
+if "%~1"=="help" goto help
+if "%~1"=="list" goto list
+if "%~1"=="active" goto active
+if "%~1"=="doctor" goto doctor
+if "%~1"=="default" goto default
+if "%~1"=="add" goto add
+if "%~1"=="remove" goto remove
 
 goto switch
 
 :help
-echo.
-echo Java Maven Switcher v2
-echo.
-echo Usage:
-echo   usejava ^<version^>                  Switch Java/Maven version
-echo   usejava list                         List configured versions
-echo   usejava active                       Show active Java/Maven
-echo   usejava add ^<version^> ^<jdk^> ^<mvn^>  Add new version
-echo   usejava remove ^<version^>           Remove version
-echo   usejava help                         Show help
-echo.
-echo Examples:
-echo   usejava 17
-echo   usejava add 21 "C:\Program Files\Java\jdk-21" "C:\Program Files\Maven\apache-maven-3.9.11"
-echo   usejava remove 8
-echo.
+powershell -NoProfile -ExecutionPolicy Bypass -Command ". '%PS_SCRIPT%'; usejava help"
 goto finish
 
 :list
-echo.
-echo Configured Java/Maven Versions:
-echo --------------------------------
-for /f "usebackq tokens=1,2,3 delims=|" %%A in ("%CONFIG_FILE%") do (
-    echo %%A | findstr /b "#" >nul
-    if errorlevel 1 (
-        if not "%%A"=="" (
-            echo %%A
-            echo   JAVA_HOME  = %%B
-            echo   MAVEN_HOME = %%C
-            echo.
-        )
-    )
-)
+powershell -NoProfile -ExecutionPolicy Bypass -Command ". '%PS_SCRIPT%'; usejava list"
 goto finish
 
 :active
 echo.
-echo Active Environment:
+echo Active Environment
+echo -------------------------------------
 echo JAVA_HOME  = %JAVA_HOME%
 echo MAVEN_HOME = %MAVEN_HOME%
 echo.
@@ -65,77 +36,30 @@ mvn -version
 echo.
 goto finish
 
+:doctor
+powershell -NoProfile -ExecutionPolicy Bypass -Command ". '%PS_SCRIPT%'; usejava doctor"
+goto finish
+
+:default
+powershell -NoProfile -ExecutionPolicy Bypass -Command ". '%PS_SCRIPT%'; usejava default '%~2'"
+goto finish
+
 :add
-set "VERSION=%~2"
-set "JDK_PATH=%~3"
-set "MVN_PATH=%~4"
-
-if "%VERSION%"=="" (
-    echo Usage: usejava add ^<version^> ^<JAVA_HOME^> ^<MAVEN_HOME^>
-    goto finish
-)
-
-if "%JDK_PATH%"=="" (
-    echo Usage: usejava add ^<version^> ^<JAVA_HOME^> ^<MAVEN_HOME^>
-    goto finish
-)
-
-if "%MVN_PATH%"=="" (
-    echo Usage: usejava add ^<version^> ^<JAVA_HOME^> ^<MAVEN_HOME^>
-    goto finish
-)
-
-findstr /b /c:"%VERSION%|" "%CONFIG_FILE%" >nul
-if not errorlevel 1 (
-    echo Version already exists: %VERSION%
-    goto finish
-)
-
-echo %VERSION%^|%JDK_PATH%^|%MVN_PATH%>>"%CONFIG_FILE%"
-echo Added Java version: %VERSION%
+powershell -NoProfile -ExecutionPolicy Bypass -Command ". '%PS_SCRIPT%'; usejava add '%~2' '%~3' '%~4'"
 goto finish
 
 :remove
-set "VERSION=%~2"
-
-if "%VERSION%"=="" (
-    echo Usage: usejava remove ^<version^>
-    goto finish
-)
-
-findstr /b /c:"%VERSION%|" "%CONFIG_FILE%" >nul
-if errorlevel 1 (
-    echo Version not found: %VERSION%
-    goto finish
-)
-
-break > "%CONFIG_FILE%.tmp"
-
-for /f "usebackq delims=" %%L in ("%CONFIG_FILE%") do (
-    echo %%L | findstr /b /c:"%VERSION%|" >nul
-    if errorlevel 1 (
-        echo %%L>>"%CONFIG_FILE%.tmp"
-    )
-)
-
-move /y "%CONFIG_FILE%.tmp" "%CONFIG_FILE%" >nul
-echo Removed Java version: %VERSION%
+powershell -NoProfile -ExecutionPolicy Bypass -Command ". '%PS_SCRIPT%'; usejava remove '%~2'"
 goto finish
 
 :switch
-set "TARGET=%CMD%"
-set "FOUND=false"
-
-for /f "usebackq tokens=1,2,3 delims=|" %%A in ("%CONFIG_FILE%") do (
-    if "%%A"=="%TARGET%" (
-        set "FOUND=true"
-        set "JAVA_HOME=%%B"
-        set "MAVEN_HOME=%%C"
-    )
+for /f "tokens=1,2 delims==" %%A in ('powershell -NoProfile -ExecutionPolicy Bypass -Command "$c=Get-Content '%USEJAVA_HOME%\config\versions.json' -Raw | ConvertFrom-Json; $v=$c.versions.PSObject.Properties['%~1']; if($v){ Write-Output ('JAVA_HOME=' + $v.Value.javaHome); Write-Output ('MAVEN_HOME=' + $v.Value.mavenHome) }"') do (
+    if "%%A"=="JAVA_HOME" set "JAVA_HOME=%%B"
+    if "%%A"=="MAVEN_HOME" set "MAVEN_HOME=%%B"
 )
 
-if "%FOUND%"=="false" (
-    echo Version not found: %TARGET%
+if "%JAVA_HOME%"=="" (
+    echo Version not found: %~1
     echo Run: usejava list
     goto finish
 )
@@ -153,7 +77,7 @@ if not exist "%MAVEN_HOME%" (
 set "PATH=%JAVA_HOME%\bin;%MAVEN_HOME%\bin;%PATH%"
 
 echo.
-echo Switched to Java %TARGET%
+echo Switched to Java %~1
 echo JAVA_HOME  = %JAVA_HOME%
 echo MAVEN_HOME = %MAVEN_HOME%
 echo.

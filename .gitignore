@@ -19,3 +19,6 @@ target/
 # Environment files
 .env
 .env.*
+
+# Temporary files
+*.tmp

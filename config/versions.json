@@ -1,0 +1,17 @@
+{
+  "default": "17",
+  "versions": {
+    "8": {
+      "javaHome": "C:\\Program Files\\Java\\jdk1.8.0_202",
+      "mavenHome": "C:\\Program Files\\Maven\\apache-maven-3.6.3"
+    },
+    "17": {
+      "javaHome": "C:\\Program Files\\Java\\jdk-17",
+      "mavenHome": "C:\\Program Files\\Maven\\apache-maven-3.9.11"
+    },
+    "21": {
+      "javaHome": "C:\\Program Files\\Java\\jdk-21",
+      "mavenHome": "C:\\Program Files\\Maven\\apache-maven-3.9.11"
+    }
+  }
+}
