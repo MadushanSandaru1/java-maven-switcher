@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 USEJAVA_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CONFIG_FILE="$USEJAVA_HOME/config/versions.json"
+CONFIG_FILE="$(cygpath -w "$USEJAVA_HOME/config/versions.json")"
 
 _to_gitbash_path() {
   echo "$1" | sed 's#\\#/#g' | sed -E 's#^([A-Za-z]):#/\L\1#'
